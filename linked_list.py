@@ -7,11 +7,12 @@
 # ===================================================
 
 
-'''
+"""
 **********************************************************************************
 Part1: Deque and Bag implemented with Linked List
 **********************************************************************************
-'''
+"""
+
 
 class SLNode:
     def __init__(self):
@@ -65,19 +66,42 @@ class LinkedList:
         new_link = SLNode()  # initialize a new link
         new_link.data = data  # set new_link data
 
+        if index < 0:
+            raise Exception("Index out of Bounds")
 
+        count = 0
+        curr_node = self.head
+        while curr_node is not self.tail:
+            if count == index:
+                new_link.next = curr_node.next
+                curr_node.next = new_link
+                return
+            count += 1
+            curr_node = curr_node.next
 
-
-        # FIXME: Complete this function
+        raise Exception("Index out of Bounds")
 
     def remove_link(self, index):
         """
         Removes the link at the location specified by index
         Args:
-            Index: The index of the node that will be removed
+            index: The index of the node that will be removed
         """
+        if index < 0:
+            raise Exception("Index out of Bounds")
 
-        # FIXME: Write this function
+        count = 0
+        curr_node = self.head
+        temp = curr_node.next
+        while curr_node is not self.tail:
+            if count == index:
+                curr_node.next = temp.next
+                return
+            count += 1
+            curr_node = curr_node.next
+            temp = curr_node.next
+
+        raise Exception("Index out of Bounds")
 
     def add_front(self, data):
         """
@@ -111,11 +135,8 @@ class LinkedList:
                 if curr_node.next == self.tail:
                     new_link.next = curr_node.next
                     curr_node.next = new_link
-                    break
+                    return
                 curr_node = curr_node.next
-
-        # TODO: Figure out how to remove the break by adding correct exit logic
-
 
     def get_front(self):
         """
@@ -125,8 +146,10 @@ class LinkedList:
         Returns:
             The data in the node at index 0 or None if there is no such node
         """
-
-        # FIXME: Write this function
+        if self.head.next == self.tail:
+            return None
+        else:
+            return self.head.next.data
 
     def get_back(self):
         """
@@ -136,23 +159,40 @@ class LinkedList:
         Returns:
             The data in the node at last index of the list or None if there is no such node
         """
-
-        # FIXME: Write this function
+        if self.head.next == self.tail:
+            return None
+        else:
+            curr_node = self.head
+            while curr_node is not self.tail:
+                if curr_node.next == self.tail:
+                    return curr_node.data
+                curr_node = curr_node.next
 
     def remove_front(self):
         """
         Removes the first element of the list. Will not remove the tail.
         """
-
-        # FIXME: Write this function
+        if self.head.next == self.tail:
+            return
+        else:
+            temp = self.head.next
+            self.head.next = temp.next
 
     def remove_back(self):
         """
         Removes the last element of the list. Will not remove the head.
         """
-
-        # FIXME: Write this function
-
+        if self.head.next == self.tail:
+            return
+        else:
+            curr_node = self.head
+            temp = self.head.next
+            while curr_node is not self.tail:
+                if temp.next == self.tail:
+                    curr_node.next = self.tail
+                    return
+                curr_node = curr_node.next
+                temp = curr_node.next
 
     def is_empty(self):
         """
@@ -161,8 +201,10 @@ class LinkedList:
         Returns:
             True if the list has no data nodes, False otherwise
         """
-
-        # FIXME: Write this function
+        if self.head.next == self.tail:
+            return True
+        else:
+            return False
 
     def contains(self, value):
         """
@@ -174,8 +216,13 @@ class LinkedList:
         Returns:
             True if value is in the list, False otherwise
         """
+        curr_node = self.head.next
+        while curr_node is not self.tail:
+            if curr_node.data == value:
+                return True
+            curr_node = curr_node.next
 
-        # FIXME: Write this function
+        return False
 
     def remove(self, value):
         """
@@ -184,21 +231,29 @@ class LinkedList:
         Args:
             value: the value to remove
         """
+        curr_node = self.head
+        temp = self.head.next
+        while curr_node is not self.tail:
+            if temp.data == value:
+                curr_node.next = temp.next
+                return
+            curr_node = curr_node.next
+            temp = curr_node.next
 
-        # FIXME: Write this function
 
-
-'''
+"""
 **********************************************************************************
 Part 2: Deque implemented with CircularlyDoublyLinked List
 **********************************************************************************
-'''
+"""
+
 
 class DLNode:
     def __init__(self):
         self.next = None
         self.prev = None
         self.data = None
+
 
 class CircularList:
     def __init__(self, start_list=None):
@@ -364,10 +419,16 @@ class CircularList:
         # FIXME: Write this function
 
 
-test_list = LinkedList([1,2,3,4])
+test_list = LinkedList([1, 2, 3, 4])
 test_list.add_front(0)
 test_list.add_back(5)
-
+test_list.add_link_before(6, 6)
+test_list.remove_link(6)
+test_list.remove_front()
+test_list.remove_back()
+print(test_list.get_front())
+print(test_list.get_back())
+test_list.remove(1)
 
 print(test_list.__str__())
 
