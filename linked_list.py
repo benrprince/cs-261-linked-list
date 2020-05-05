@@ -301,16 +301,48 @@ class CircularList:
         new_link = DLNode()  # initialize a new link
         new_link.data = data  # set new_link data
 
-        # FIXME: Complete this function
+        if index < 0:
+            raise Exception("Index out of Bounds")
+
+        count = 0
+        curr_node = self.sentinel
+        # Do while loop
+        while True:
+            if count == index:
+                temp = curr_node.next
+                curr_node.next = new_link
+                new_link.prev = curr_node
+                new_link.next = temp
+                return
+
+            count += 1
+            curr_node = curr_node.next
+            if curr_node == self.sentinel:
+                break
+
+        raise Exception("Index out of Bounds")
 
     def remove_link(self, index):
         """
         Removes the link at the location specified by index
         Args:
-            Index: The index of the node that will be removed
+            index: The index of the node that will be removed
         """
+        if index < 0:
+            raise Exception("Index out of Bounds")
 
-        # FIXME: Write this function
+        count = 0
+        curr_node = self.sentinel
+
+        while curr_node.next != self.sentinel:
+            if count == index:
+                curr_node.next = curr_node.next.next
+                curr_node.next.prev = curr_node
+                return
+
+            count += 1
+            curr_node = curr_node.next
+        raise Exception("Index out of Bounds")
 
     def add_front(self, data):
         """
@@ -322,7 +354,10 @@ class CircularList:
         new_link = DLNode()  # initialize a new link
         new_link.data = data  # set new_link data
 
-        # FIXME: Complete this function
+        temp = self.sentinel.next
+        self.sentinel.next = new_link
+        new_link.prev = self.sentinel
+        new_link.next = temp
 
     def add_back(self, data):
         """
@@ -334,7 +369,12 @@ class CircularList:
         new_link = DLNode()  # initialize a new link
         new_link.data = data  # set new_link data
 
-        # FIXME: Complete this function
+        temp = self.sentinel.prev
+
+        self.sentinel.prev.next = new_link
+        self.sentinel.prev = new_link
+        new_link.prev = temp
+        new_link.next = self.sentinel
 
     def get_front(self):
         """
@@ -344,9 +384,8 @@ class CircularList:
         Returns:
             The data in the node at index 0 or None if there is no such node
         """
-
-        # FIXME: Write this function
-
+        link = self.sentinel.next
+        return link.data
 
     def get_back(self):
         """
@@ -356,24 +395,22 @@ class CircularList:
         Returns:
             The data in the node at last index of the list or None if there is no such node
         """
-
-        # FIXME: Write this function
-
+        link = self.sentinel.prev
+        return link.data
 
     def remove_front(self):
         """
         Removes the first element of the list. Will not remove the tail.
         """
-
-        # FIXME: Write this function
-
+        self.sentinel.next = self.sentinel.next.next
+        self.sentinel.next.prev = self.sentinel
 
     def remove_back(self):
         """
         Removes the last element of the list. Will not remove the head.
         """
-
-        # FIXME: Write this function
+        self.sentinel.prev = self.sentinel.prev.prev
+        self.sentinel.prev.next = self.sentinel
 
     def is_empty(self):
         """
@@ -382,9 +419,10 @@ class CircularList:
         Returns:
             True if the list has no data nodes, False otherwise
         """
-
-        # FIXME: Write this function
-
+        if self.sentinel.next == self.sentinel:
+            return True
+        else:
+            return False
 
     def contains(self, value):
         """
@@ -396,8 +434,14 @@ class CircularList:
         Returns:
             True if value is in the list, False otherwise
         """
+        curr_node = self.sentinel
+        while True:
+            if curr_node.data == value:
+                return True
 
-        # FIXME: Write this function
+            curr_node = curr_node.next
+            if curr_node == self.sentinel:
+                return False
 
     def remove(self, value):
         """
@@ -406,8 +450,16 @@ class CircularList:
         Args:
             value: the value to remove
         """
+        curr_node = self.sentinel
+        while True:
+            if curr_node.data == value:
+                curr_node.prev.next = curr_node.next
+                curr_node.next.prev = curr_node.prev
+                return
 
-        # FIXME: Write this function
+            curr_node = curr_node.next
+            if curr_node == self.sentinel:
+                return
 
     def circularListReverse(self):
         """
@@ -419,16 +471,33 @@ class CircularList:
         # FIXME: Write this function
 
 
-test_list = LinkedList([1, 2, 3, 4])
-test_list.add_front(0)
-test_list.add_back(5)
-test_list.add_link_before(6, 6)
-test_list.remove_link(6)
-test_list.remove_front()
-test_list.remove_back()
-print(test_list.get_front())
-print(test_list.get_back())
-test_list.remove(1)
+# test_list = LinkedList([1, 2, 3, 4])
+# test_list.add_front(0)
+# test_list.add_back(5)
+# test_list.add_link_before(6, 6)
+# test_list.remove_link(6)
+# test_list.remove_front()
+# test_list.remove_back()
+# print(test_list.get_front())
+# print(test_list.get_back())
+# test_list.remove(1)
+# print(test_list.__str__())
 
-print(test_list.__str__())
+# circ_list = CircularList([1, 2, 3, 4])
+# circ_list.add_back(5)
+# circ_list.add_front(0)
+# print(circ_list.get_front())
+# print(circ_list.get_back())
+# circ_list.remove_front()
+# circ_list.remove_back()
+# circ_list.add_link_before(0, 0)
+# circ_list.remove_link(0)
+# print(circ_list.contains(0))
+# circ_list.remove(5)
+#
+# print(circ_list.__str__())
+#
+# print(circ_list.get_front())
+# print(circ_list.get_back())
+
 
