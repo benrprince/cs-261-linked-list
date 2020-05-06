@@ -67,7 +67,7 @@ class LinkedList:
         new_link.data = data  # set new_link data
 
         if index < 0:
-            raise Exception("Index out of Bounds")
+            raise Exception("Index out of bounds")
 
         count = 0
         curr_node = self.head
@@ -79,7 +79,7 @@ class LinkedList:
             count += 1
             curr_node = curr_node.next
 
-        raise Exception("Index out of Bounds")
+        raise Exception("Index out of bounds")
 
     def remove_link(self, index):
         """
@@ -88,7 +88,7 @@ class LinkedList:
             index: The index of the node that will be removed
         """
         if index < 0:
-            raise Exception("Index out of Bounds")
+            raise Exception("Index out of bounds")
 
         count = 0
         curr_node = self.head
@@ -101,7 +101,7 @@ class LinkedList:
             curr_node = curr_node.next
             temp = curr_node.next
 
-        raise Exception("Index out of Bounds")
+        raise Exception("Index out of bounds")
 
     def add_front(self, data):
         """
@@ -302,7 +302,7 @@ class CircularList:
         new_link.data = data  # set new_link data
 
         if index < 0:
-            raise Exception("Index out of Bounds")
+            raise Exception("Index out of bounds")
 
         count = 0
         curr_node = self.sentinel
@@ -313,6 +313,7 @@ class CircularList:
                 curr_node.next = new_link
                 new_link.prev = curr_node
                 new_link.next = temp
+                temp.prev = new_link
                 return
 
             count += 1
@@ -320,7 +321,7 @@ class CircularList:
             if curr_node == self.sentinel:
                 break
 
-        raise Exception("Index out of Bounds")
+        raise Exception("Index out of bounds")
 
     def remove_link(self, index):
         """
@@ -329,7 +330,7 @@ class CircularList:
             index: The index of the node that will be removed
         """
         if index < 0:
-            raise Exception("Index out of Bounds")
+            raise Exception("Index out of bounds")
 
         count = 0
         curr_node = self.sentinel
@@ -342,7 +343,7 @@ class CircularList:
 
             count += 1
             curr_node = curr_node.next
-        raise Exception("Index out of Bounds")
+        raise Exception("Index out of bounds")
 
     def add_front(self, data):
         """
@@ -355,9 +356,11 @@ class CircularList:
         new_link.data = data  # set new_link data
 
         temp = self.sentinel.next
+
         self.sentinel.next = new_link
         new_link.prev = self.sentinel
         new_link.next = temp
+        temp.prev = new_link
 
     def add_back(self, data):
         """
@@ -467,37 +470,12 @@ class CircularList:
         (e.g. you cannot call DLNode()). If the list printed by following next was 0, 1, 2, 3,
         after the call it will be 3,2,1,0
         """
+        curr_node = self.sentinel
+        while True:
+            temp = curr_node.prev
+            curr_node.prev = curr_node.next
+            curr_node.next = temp
 
-        # FIXME: Write this function
-
-
-# test_list = LinkedList([1, 2, 3, 4])
-# test_list.add_front(0)
-# test_list.add_back(5)
-# test_list.add_link_before(6, 6)
-# test_list.remove_link(6)
-# test_list.remove_front()
-# test_list.remove_back()
-# print(test_list.get_front())
-# print(test_list.get_back())
-# test_list.remove(1)
-# print(test_list.__str__())
-
-# circ_list = CircularList([1, 2, 3, 4])
-# circ_list.add_back(5)
-# circ_list.add_front(0)
-# print(circ_list.get_front())
-# print(circ_list.get_back())
-# circ_list.remove_front()
-# circ_list.remove_back()
-# circ_list.add_link_before(0, 0)
-# circ_list.remove_link(0)
-# print(circ_list.contains(0))
-# circ_list.remove(5)
-#
-# print(circ_list.__str__())
-#
-# print(circ_list.get_front())
-# print(circ_list.get_back())
-
-
+            curr_node = curr_node.prev
+            if curr_node == self.sentinel:
+                break
